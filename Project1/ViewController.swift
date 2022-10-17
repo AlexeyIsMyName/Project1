@@ -28,6 +28,8 @@ class ViewController: UITableViewController {
             }
         }
         
+        pictures.sort()
+        
         print(pictures)
     }
 
@@ -37,7 +39,8 @@ class ViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Picture", for: indexPath)
-        cell.textLabel?.text = pictures[indexPath.row]
+//        cell.textLabel?.text = pictures[indexPath.row]
+        cell.textLabel?.text = "Picture \(indexPath.row + 1) of \(pictures.count)"
         return cell
     }
     
@@ -46,6 +49,8 @@ class ViewController: UITableViewController {
         if let vc = storyboard?.instantiateViewController(withIdentifier: "Detail") as? DetailViewController {
             // 2: success! Set its selectedImage property
             vc.selectedImage = pictures[indexPath.row]
+            vc.selectedPictureNumber = indexPath.row + 1
+            vc.totalPictures = pictures.count
             
             // 3: now push it onto the navigation controller
             navigationController?.pushViewController(vc, animated: true)
