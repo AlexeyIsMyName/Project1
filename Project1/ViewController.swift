@@ -21,20 +21,26 @@ class ViewController: UITableViewController {
                                                             target: self,
                                                             action: #selector(shareTapped))
         
-        let fm = FileManager.default
-        let path = Bundle.main.resourcePath!
-        let items = try! fm.contentsOfDirectory(atPath: path)
+        DispatchQueue.global().async { [weak self] in
+            let fm = FileManager.default
+            let path = Bundle.main.resourcePath!
+            let items = try! fm.contentsOfDirectory(atPath: path)
 
-        for item in items {
-            if item.hasPrefix("nssl") {
-                // this is a picture to load!
-                pictures.append(item)
+            for item in items {
+                if item.hasPrefix("nssl") {
+                    // this is a picture to load!
+                    self?.pictures.append(item)
+                }
+            }
+            
+            self?.pictures.sort()
+            
+//            print(self?.pictures)
+            
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.reloadData()
             }
         }
-        
-        pictures.sort()
-        
-        print(pictures)
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
